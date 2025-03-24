@@ -1,7 +1,7 @@
 package com.multiverse.Snipper.controller;
 
-import com.multiverse.Snipper.model.User;
-import com.multiverse.Snipper.service.UserServiceImpl;
+import com.multiverse.Snipper.model.Snippet;
+import com.multiverse.Snipper.service.SnippetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,25 +14,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
-
+@RequestMapping("/snippet")
+public class SnippetController {
   @Autowired
-  private UserServiceImpl userServiceImpl;
+  private SnippetServiceImpl snippetServiceImpl;
 
-  @PostMapping("")
-  public ResponseEntity<User> createUser(@RequestBody User user) {
-    return new ResponseEntity<>(userServiceImpl.create(user), HttpStatus.CREATED);
+  @PostMapping
+  public ResponseEntity<Snippet> createSnippet(@RequestBody Snippet snippet) {
+    return new ResponseEntity<>(snippetServiceImpl.createSnippet(snippet), HttpStatus.CREATED);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
-    return new ResponseEntity<>(userServiceImpl.findById(id), HttpStatus.OK);
+  public ResponseEntity<Snippet> getSnippet(@PathVariable("id") Long id) {
+    return new ResponseEntity<>(snippetServiceImpl.getSnippet(id), HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
-    userServiceImpl.deleteById(id);
+  public ResponseEntity<Void> deleteSnippet(@PathVariable("id") Long id) {
+    snippetServiceImpl.deleteSnippet(id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

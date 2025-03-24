@@ -5,7 +5,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "snippet")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,10 +16,8 @@ public class Snippet {
   @Column(name = "id")
   private Long id;
 
+  @NonNull
   @Column(name = "content")
   private String content;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(referencedColumnName = "id", name = "user_id")
-  private User user;
 }
