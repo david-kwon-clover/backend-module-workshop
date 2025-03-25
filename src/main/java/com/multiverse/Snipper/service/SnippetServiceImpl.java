@@ -2,12 +2,17 @@ package com.multiverse.Snipper.service;
 
 import com.multiverse.Snipper.model.Snippet;
 import com.multiverse.Snipper.repository.SnippetRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class SnippetServiceImpl implements SnippetService {
-  @Autowired private SnippetRepository snippetRepository;
+  @Autowired
+  private SnippetRepository snippetRepository;
 
   @Override
   public Snippet createSnippet(Snippet snippet) {
@@ -15,8 +20,23 @@ public class SnippetServiceImpl implements SnippetService {
   }
 
   @Override
-  public Snippet getSnippet(Long id) {
-    return snippetRepository.findById(id).orElse(null);
+  public List<Snippet> getAllSnippets() {
+    return snippetRepository.findAll();
+  }
+
+  @Override
+  public List<Snippet> getSnippetsByLanguage(String language) {
+    return snippetRepository.findAllByLanguage(language);
+  }
+
+  @Override
+  public Optional<Snippet> getSnippet(Long id) {
+    Optional<Snippet> snippet = snippetRepository.findById(id);
+    if (snippet.isPresent()) {
+      return snippet;
+    } else {
+      throw new EntityNotFoundException("Snippet with id " + id + " not found");
+    }
   }
 
   @Override
