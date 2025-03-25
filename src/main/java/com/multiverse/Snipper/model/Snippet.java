@@ -1,6 +1,7 @@
 package com.multiverse.Snipper.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 @Entity
@@ -16,8 +17,13 @@ public class Snippet {
   @Column(name = "id")
   private Long id;
 
+  @NotEmpty(message = "Code snippet must have a programming language")
+  @NonNull
+  @Column(name = "language")
+  private String language;
+
+  @NotEmpty(message = "Code snippet cannot be blank")
   @NonNull
   @Column(name = "content")
   private String content;
-
 }
