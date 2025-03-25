@@ -1,6 +1,7 @@
 package com.multiverse.Snipper.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 @Entity
@@ -15,7 +16,13 @@ public class User {
   @Column(name = "id")
   private Long id;
 
-  @Column(name = "name")
+  @NotEmpty(message = "User name cannot be empty")
   @NonNull
+  @Column(name = "name")
   private String name;
+
+  @NotEmpty(message = "User password cannot be empty")
+  @NonNull
+  @Column(name = "password")
+  private String password;
 }

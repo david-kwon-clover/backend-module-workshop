@@ -2,6 +2,7 @@ package com.multiverse.Snipper.controller;
 
 import com.multiverse.Snipper.model.User;
 import com.multiverse.Snipper.service.UserServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class UserController {
   private UserServiceImpl userServiceImpl;
 
   @PostMapping("")
-  public ResponseEntity<User> createUser(@RequestBody User user) {
+  public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
     return new ResponseEntity<>(userServiceImpl.create(user), HttpStatus.CREATED);
   }
 

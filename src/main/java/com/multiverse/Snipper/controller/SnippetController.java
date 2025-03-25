@@ -3,6 +3,7 @@ package com.multiverse.Snipper.controller;
 import com.multiverse.Snipper.model.Snippet;
 import com.multiverse.Snipper.service.SnippetServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class SnippetController {
   private SnippetServiceImpl snippetServiceImpl;
 
   @PostMapping
-  public ResponseEntity<Snippet> createSnippet(@RequestBody Snippet snippet) {
+  public ResponseEntity<Snippet> createSnippet(@RequestBody @Valid Snippet snippet) {
     return new ResponseEntity<>(snippetServiceImpl.createSnippet(snippet), HttpStatus.CREATED);
   }
 
