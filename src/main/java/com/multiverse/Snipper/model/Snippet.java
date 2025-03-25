@@ -24,6 +24,6 @@ public class Snippet {
 
   @NotEmpty(message = "Code snippet cannot be blank")
   @NonNull
-  @Column(name = "content")
+  @Column(name = "content", columnDefinition = "TEXT")
   private String content;
 }
