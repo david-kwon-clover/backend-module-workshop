@@ -32,7 +32,7 @@ public class SnippetServiceImpl implements SnippetService {
   public List<Snippet> getAllSnippets() {
     List<Snippet> allSnippets = snippetRepository.findAll();
     allSnippets.forEach(snippet ->
-                            snippet.setContent(encryptionService.decrypt(snippet.getContent()))
+      snippet.setContent(encryptionService.decrypt(snippet.getContent()))
     );
     return allSnippets;
   }
@@ -41,7 +41,7 @@ public class SnippetServiceImpl implements SnippetService {
   public List<Snippet> getSnippetsByLanguage(String language) {
     List<Snippet> allSnippetsByLanguage = snippetRepository.findAllByLanguage(language);
     allSnippetsByLanguage.forEach(snippet ->
-                                      snippet.setContent(encryptionService.decrypt(snippet.getContent()))
+      snippet.setContent(encryptionService.decrypt(snippet.getContent()))
     );
     return allSnippetsByLanguage;
   }
