@@ -2,6 +2,8 @@ package com.multiverse.Snipper;
 
 import com.multiverse.Snipper.model.Snippet;
 import com.multiverse.Snipper.repository.SnippetRepository;
+import com.multiverse.Snipper.service.SnippetService;
+import com.multiverse.Snipper.service.SnippetServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SnipperApplication implements CommandLineRunner {
 
 	@Autowired
-	private SnippetRepository snippetRepository;
+	private SnippetServiceImpl snippetServiceImpl;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SnipperApplication.class, args);
@@ -31,7 +33,7 @@ public class SnipperApplication implements CommandLineRunner {
 		};
 
 		for (Snippet snippet : snippets) {
-			snippetRepository.save(snippet);
+			snippetServiceImpl.createSnippet(snippet);
 		}
 	}
 }

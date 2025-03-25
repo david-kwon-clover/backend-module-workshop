@@ -17,12 +17,12 @@ public class SnippetController {
   private SnippetServiceImpl snippetServiceImpl;
 
   @PostMapping
-  public ResponseEntity<Snippet> createSnippet(@RequestBody @Valid Snippet snippet) {
+  public ResponseEntity<Snippet> createSnippet(@RequestBody @Valid Snippet snippet) throws Exception {
     return new ResponseEntity<>(snippetServiceImpl.createSnippet(snippet), HttpStatus.CREATED);
   }
 
   @GetMapping
-  public ResponseEntity<List<Snippet>> getAllSnippets(@RequestParam(required = false) String language) {
+  public ResponseEntity<List<Snippet>> getAllSnippets(@RequestParam(required = false) String language) throws RuntimeException {
     if (language != null) {
       return new ResponseEntity<>(snippetServiceImpl.getSnippetsByLanguage(language), HttpStatus.OK);
     } else {
@@ -31,13 +31,13 @@ public class SnippetController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Optional<Snippet>> getSnippet(@PathVariable("id") Long id) {
+  public ResponseEntity<Optional<Snippet>> getSnippet(@PathVariable("id") Long id) throws Exception {
     Optional<Snippet> snippet = snippetServiceImpl.getSnippet(id);
     return new ResponseEntity<>(snippet, HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteSnippet(@PathVariable("id") Long id) {
+  public ResponseEntity<Void> deleteSnippet(@PathVariable("id") Long id) throws Exception {
     Optional<Snippet> snippet = snippetServiceImpl.getSnippet(id);
     snippetServiceImpl.deleteSnippet(snippet.get().getId());
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);

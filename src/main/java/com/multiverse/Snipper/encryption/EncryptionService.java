@@ -1,5 +1,7 @@
 package com.multiverse.Snipper.encryption;
 
+import com.multiverse.Snipper.exception.DecryptionException;
+import com.multiverse.Snipper.exception.EncryptionException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
@@ -41,33 +43,43 @@ public class EncryptionService {
   }
 
   // Store IV with encrypted data (required for decryption)
-  public String encrypt(String plainText) throws Exception {
-    Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-    cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
-    byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
+  public String encrypt(String plainText) {
+    try {
+      Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+      cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
+      byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
 
-    // Combine IV and encrypted content
-    byte[] combined = new byte[iv.getIV().length + encryptedBytes.length];
-    System.arraycopy(iv.getIV(), 0, combined, 0, iv.getIV().length);
-    System.arraycopy(encryptedBytes, 0, combined, iv.getIV().length, encryptedBytes.length);
+      // Combine IV and encrypted content
+      byte[] combined = new byte[iv.getIV().length + encryptedBytes.length];
+      System.arraycopy(iv.getIV(), 0, combined, 0, iv.getIV().length);
+      System.arraycopy(encryptedBytes, 0, combined, iv.getIV().length, encryptedBytes.length);
 
-    return Base64.getEncoder().encodeToString(combined);
+      return Base64.getEncoder().encodeToString(combined);
+    } catch (Exception e) {
+      throw new EncryptionException("Failed to encrypt text", e);
+    }
   }
 
-  public String decrypt(String encryptedText) throws Exception {
-    byte[] combined = Base64.getDecoder().decode(encryptedText);
+  public String decrypt(String encryptedText) {
+    try {
+      byte[] combined = Base64.getDecoder().decode(encryptedText);
 
-    // Extract IV and encrypted content
-    byte[] ivBytes = new byte[16];
-    byte[] encryptedBytes = new byte[combined.length - 16];
-    System.arraycopy(combined, 0, ivBytes, 0, ivBytes.length);
-    System.arraycopy(combined, ivBytes.length, encryptedBytes, 0, encryptedBytes.length);
+      // Extract IV and encrypted content
+      byte[] ivBytes = new byte[16];
+      byte[] encryptedBytes = new byte[combined.length - 16];
+      System.arraycopy(combined, 0, ivBytes, 0, ivBytes.length);
+      System.arraycopy(combined, ivBytes.length, encryptedBytes, 0, encryptedBytes.length);
 
-    IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
+      IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
 
-    Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-    cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-    byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-    return new String(decryptedBytes);
+      Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+      cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
+      byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+      return new String(decryptedBytes);
+    } catch (IllegalArgumentException e) {
+      throw new DecryptionException("Invalid Base64 encoded data", e);
+    } catch (Exception e) {
+      throw new DecryptionException("Failed to decrypt data", e);
+    }
   }
 }
