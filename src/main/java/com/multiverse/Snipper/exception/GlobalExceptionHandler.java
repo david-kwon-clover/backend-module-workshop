@@ -17,11 +17,11 @@ public class GlobalExceptionHandler {
 
     ErrorResponse error = new ErrorResponse(
         LocalDateTime.now(),
-        HttpStatus.NOT_FOUND.value(),
+        HttpStatus.BAD_REQUEST.value(),
         ex.getMessage(),
         request.getDescription(false)
     );
 
-    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
 }

@@ -35,7 +35,8 @@ public class SnippetController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteSnippet(@PathVariable("id") Long id) {
-    snippetServiceImpl.deleteSnippet(id);
+    Optional<Snippet> snippet = snippetServiceImpl.getSnippet(id);
+    snippetServiceImpl.deleteSnippet(snippet.get().getId());
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }
