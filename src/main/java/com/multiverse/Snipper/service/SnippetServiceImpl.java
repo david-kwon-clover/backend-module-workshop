@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +17,16 @@ public class SnippetServiceImpl implements SnippetService {
   @Override
   public Snippet createSnippet(Snippet snippet) {
     return snippetRepository.save(snippet);
+  }
+
+  @Override
+  public List<Snippet> getAllSnippets() {
+    return snippetRepository.findAll();
+  }
+
+  @Override
+  public List<Snippet> getSnippetsByLanguage(String language) {
+    return snippetRepository.findAllByLanguage(language);
   }
 
   @Override

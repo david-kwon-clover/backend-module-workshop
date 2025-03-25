@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,6 +28,15 @@ public class SnippetController {
   @PostMapping
   public ResponseEntity<Snippet> createSnippet(@RequestBody @Valid Snippet snippet) {
     return new ResponseEntity<>(snippetServiceImpl.createSnippet(snippet), HttpStatus.CREATED);
+  }
+
+  @GetMapping
+  public ResponseEntity<List<Snippet>> getAllSnippets(@RequestParam(required = false) String language) {
+    if (language != null) {
+      return new ResponseEntity<>(snippetServiceImpl.getSnippetsByLanguage(language), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(snippetServiceImpl.getAllSnippets(), HttpStatus.OK);
+    }
   }
 
   @GetMapping("/{id}")
